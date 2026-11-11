@@ -1,0 +1,5 @@
+0000000000000000000000000000000000000000 85ee71ce2aacd948eb40deafb09d4fc718efb0b7 Ayman el founti <aymaneelfounti@gmail.com> 1793902170 +0000	commit (initial): feat: initial Laravel 11 REST API with Sanctum, projects CRUD, chatbot OpenAI, and image upload
+85ee71ce2aacd948eb40deafb09d4fc718efb0b7 0000000000000000000000000000000000000000 Ayman el founti <aymaneelfounti@gmail.com> 1793972565 +0000	Branch: renamed refs/heads/master to refs/heads/main
+0000000000000000000000000000000000000000 85ee71ce2aacd948eb40deafb09d4fc718efb0b7 Ayman el founti <aymaneelfounti@gmail.com> 1793972565 +0000	Branch: renamed refs/heads/master to refs/heads/main
+85ee71ce2aacd948eb40deafb09d4fc718efb0b7 f37e4a6fd33d1f5cadaf44434b574eff303b5792 Ayman el founti <aymaneelfounti@gmail.com> 1793972607 +0000	commit: feat: complete uploads controller and directory structure
+f37e4a6fd33d1f5cadaf44434b574eff303b5792 d6fcaf7a04e7d5463a2c411912572745934d032d Ayman el founti <aymaneelfounti@gmail.com> 1794230111 +0000	commit: fix(seeder): fix syntax error and add sql dump
