@@ -10,6 +10,7 @@ import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ImageIcon from '@mui/icons-material/Image';
+import LaunchIcon from '@mui/icons-material/Launch';
 import { useProjects } from '../../hooks/useProjects';
 import api from '../../lib/api';
 import type { Project } from '../../types/admin';
@@ -35,8 +36,7 @@ export const ProjectsManager: React.FC = () => {
   const [selectedFileName, setSelectedFileName] = useState<string>('');
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
-  const [tagsInput, setTagsInput] = useState('');
-  const [price, setPrice] = useState<number>(0);
+  const [link, setLink] = useState('');
   const [category, setCategory] = useState('Web');
   const [isActive, setIsActive] = useState(true);
   const [isFeatured, setIsFeatured] = useState(false);
@@ -85,8 +85,7 @@ export const ProjectsManager: React.FC = () => {
     setImagePreview('');
     setSelectedFileName('');
     setUploadError(null);
-    setTagsInput('');
-    setPrice(0);
+    setLink('');
     setCategory('Web');
     setIsActive(true);
     setIsFeatured(false);
@@ -102,8 +101,8 @@ export const ProjectsManager: React.FC = () => {
     setImagePreview(project.image_url || '');
     setSelectedFileName('');
     setUploadError(null);
-    setTagsInput(Array.isArray(project.tags) ? project.tags.join(', ') : '');
-    setPrice(Number(project.price) || 0);
+    const existingLink = project.link || (Array.isArray(project.tags) && project.tags[0]?.startsWith('http') ? project.tags[0] : '');
+    setLink(existingLink);
     setCategory(project.category || 'Web');
     setIsActive(project.is_active ?? true);
     setIsFeatured(project.is_featured ?? false);
@@ -133,10 +132,15 @@ export const ProjectsManager: React.FC = () => {
       if (response.data?.url) {
         setImageUrl(response.data.url);
       }
-    } catch (err: any) {
-      setUploadError(
-        err.response?.data?.message || (isRTL ? 'فشل رفع الصورة إلى الخادم' : 'Failed to upload image')
-      );
+    } catch {
+      // In offline/local mode, convert to base64 Data URL so the image displays perfectly
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === 'string') {
+          setImageUrl(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
     } finally {
       setUploadingImage(false);
     }
@@ -162,18 +166,17 @@ export const ProjectsManager: React.FC = () => {
     setSubmitting(true);
     setFormError(null);
 
-    const tags = tagsInput
-      .split(',')
-      .map((t) => t.trim())
-      .filter(Boolean);
+    const cleanedLink = link.trim();
+    const formattedLink = cleanedLink && !/^https?:\/\//i.test(cleanedLink) ? `https://${cleanedLink}` : cleanedLink;
 
     const payload = {
-      title,
-      description,
+      title: title.trim(),
+      description: description.trim(),
       image_url: imageUrl,
-      tags,
-      price: Number(price),
-      category,
+      link: formattedLink,
+      tags: formattedLink ? [formattedLink] : [],
+      price: 0,
+      category: category.trim() || 'Web',
       is_active: isActive,
       is_featured: isFeatured,
     };
@@ -426,37 +429,45 @@ export const ProjectsManager: React.FC = () => {
                     {project.description}
                   </p>
 
-                  {/* Tags */}
-                  {Array.isArray(project.tags) && project.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5 mb-4">
-                      {project.tags.map((tag, i) => (
-                        <span
-                          key={i}
-                          className="text-[11px] px-2 py-0.5 rounded-md bg-white/5 text-zinc-300 border border-white/10"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+                  {/* Project Link */}
+                  {Boolean(project.link || (Array.isArray(project.tags) && project.tags[0]?.startsWith('http'))) && (
+                    <div className="mb-4">
+                      <a
+                        href={project.link || project.tags[0]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs text-blue-400 hover:text-blue-300 px-2.5 py-1 rounded-lg bg-blue-500/10 border border-blue-500/20 hover:bg-blue-500/20 transition-all truncate max-w-full"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <LaunchIcon sx={{ fontSize: 13 }} />
+                        <span className="truncate">{(project.link || project.tags[0]).replace(/^https?:\/\//, '')}</span>
+                      </a>
                     </div>
                   )}
                 </div>
 
-                {/* Price (in USD $) and Action footer */}
+                {/* Card Action footer */}
                 <div
                   className="pt-4 border-t flex items-center justify-between"
                   style={{ borderColor: 'var(--border-subtle)' }}
                 >
-                  <div>
-                    <span className="text-[11px] block" style={{ color: 'var(--text-muted)' }}>
-                      {isRTL ? 'السعر' : 'Price'}
-                    </span>
-                    <span className="text-base font-bold text-white tracking-tight">
-                      {Number(project.price) > 0
-                        ? `$${Number(project.price).toLocaleString()}`
-                        : isRTL
-                        ? 'حسب الطلب'
-                        : 'Custom'}
-                    </span>
+                  <div className="flex items-center gap-2">
+                    {Boolean(project.link || (Array.isArray(project.tags) && project.tags[0]?.startsWith('http'))) ? (
+                      <a
+                        href={project.link || project.tags[0]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-xs font-semibold text-blue-400 hover:text-blue-300 hover:underline"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <LaunchIcon sx={{ fontSize: 13 }} />
+                        <span>{isRTL ? 'زيارة الرابط' : 'Visit Link'}</span>
+                      </a>
+                    ) : (
+                      <span className="text-xs text-zinc-500">
+                        {isRTL ? 'بدون رابط مباشر' : 'No direct link'}
+                      </span>
+                    )}
                   </div>
 
                   <div className="flex items-center gap-1.5">
@@ -535,40 +546,19 @@ export const ProjectsManager: React.FC = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-medium text-zinc-300 mb-1">
-                    {isRTL ? 'التصنيف' : 'Category'}
-                  </label>
-                  <select
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    className="w-full px-3.5 py-2 rounded-xl border text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}
-                  >
-                    <option value="Web">Web Development</option>
-                    <option value="Mobile">Mobile Apps</option>
-                    <option value="E-Commerce">E-Commerce</option>
-                    <option value="AI">AI & Automation</option>
-                    <option value="ERP">ERP Systems</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-zinc-300 mb-1">
-                    {isRTL ? 'السعر ($ بالدولار الأمريكي)' : 'Price ($ USD)'}
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    step="50"
-                    value={price}
-                    onChange={(e) => setPrice(Number(e.target.value))}
-                    placeholder="1500"
-                    className="w-full px-3.5 py-2 rounded-xl border text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}
-                  />
-                </div>
+              <div>
+                <label className="block text-xs font-medium text-zinc-300 mb-1">
+                  {isRTL ? 'تصنيف المشروع (اكتب اسم القسم)' : 'Category (Type Category Name)'} *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  placeholder={isRTL ? 'مثال: Websites, E-Commerce, Mobile Apps, AI...' : 'e.g. Websites, E-Commerce, Mobile Apps, AI...'}
+                  className="w-full px-3.5 py-2 rounded-xl border text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}
+                />
               </div>
 
               {/* ── Image File Upload Section ── */}
@@ -669,14 +659,15 @@ export const ProjectsManager: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-zinc-300 mb-1">
-                  {isRTL ? 'الوسوم (مفصولة بفاصلة)' : 'Tags (comma separated)'}
+                <label className="block text-xs font-medium text-zinc-300 mb-1 flex items-center justify-between">
+                  <span>{isRTL ? 'رابط المشروع (يفتح في صفحة جديدة عند النقر)' : 'Project Link (Opens in new tab when clicked)'}</span>
+                  <span className="text-[10px] text-zinc-400">URL / Link</span>
                 </label>
                 <input
                   type="text"
-                  value={tagsInput}
-                  onChange={(e) => setTagsInput(e.target.value)}
-                  placeholder="React, Next.js, Tailwind, Figma"
+                  value={link}
+                  onChange={(e) => setLink(e.target.value)}
+                  placeholder="https://example.com"
                   className="w-full px-3.5 py-2 rounded-xl border text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                   style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}
                 />

@@ -43,6 +43,7 @@ export interface ProjectItem {
   subtitleEn: string
   subtitleAr: string
   category: ProjectCategory
+  rawCategory?: string
   categories?: ProjectCategory[]
   tags: Array<{ label: string; icon?: React.ReactNode }>
   image: string
@@ -53,191 +54,55 @@ export interface ProjectItem {
   impactAr: string
   techStack: string[]
   isFeatured?: boolean
+  link?: string
 }
 
-export const projectsData: ProjectItem[] = [
-  {
-    id: 'aura-store',
-    title: 'Aura Luxe Store',
-    subtitleEn: 'High-Performance Luxury E-Commerce & Checkout Platform',
-    subtitleAr: 'متجر إلكتروني متقدم للمنتجات الفاخرة مع بوابة دفع ذكية',
-    category: 'Ecommerce',
-    categories: ['Web', 'Ecommerce'],
-    tags: [
-      { label: 'Web' },
-      { label: 'E-Commerce' },
-      { label: 'Figma', icon: <FigmaIcon /> },
-      { label: 'Ae', icon: <AfterEffectsIcon /> },
-    ],
-    image: '/projects/aura-store.jpg',
-    client: 'Aura Luxury Brands Ltd',
-    scopeEn: 'Bespoke headless e-commerce architecture, instantaneous client-side filtering, multi-currency checkout, and real-time inventory synchronization',
-    scopeAr: 'تصميم وبناء متجر إلكتروني فائق السرعة مع تجربة تسوق تفاعلية وتكامل بوابات الدفع الإلكتروني وتتبع المخزون والطلبات لحظياً',
-    impactEn: 'Achieved 42% lift in mobile checkout conversion and sub-second catalog page load',
-    impactAr: 'زيادة معدل إتمام عمليات الشراء عبر الجوال بنسبة 42% مع سرعة تحميل أقل من ثانية لصفحات المنتجات',
-    techStack: ['React', 'TypeScript', 'TailwindCSS', 'Stripe', 'PostgreSQL', 'Figma'],
-    isFeatured: true,
-  },
-  {
-    id: 'quantumyield',
-    title: 'QuantumYield',
-    subtitleEn: 'AI-Powered DeFi optimizer on Solana',
-    subtitleAr: 'منصة تحسين عوائد مالية لا مركزية بالذكاء الاصطناعي على Solana',
-    category: 'Web',
-    categories: ['Web', 'Ecommerce'],
-    tags: [
-      { label: 'Web' },
-      { label: 'Figma', icon: <FigmaIcon /> },
-    ],
-    image: '/projects/quantumyield.jpg',
-    client: 'Quantum Capital Corp',
-    scopeEn: 'Full UI/UX Design system, high-frequency React dashboard, Web3 Solana wallet integration, and sub-second price streaming',
-    scopeAr: 'نظام تصميم UI/UX كامل ولوحة تحكم سريعة بتقنية React وربط محافظ Solana ومزامنة الأسعار اللحظية في أجزاء من الثانية',
-    impactEn: 'Achieved $42M+ TVL in initial 90 days with 99.98% uptime',
-    impactAr: 'تحقيق أكثر من 42 مليون دولار في إجمالي القيمة المقفلة خلال 90 يوماً بنسبة استقرار 99.98%',
-    techStack: ['React', 'TypeScript', 'TailwindCSS', 'Solana Web3.js', 'Framer Motion'],
-  },
-  {
-    id: 'solanatap',
-    title: 'SolanaTap',
-    subtitleEn: 'Web App in Telegram',
-    subtitleAr: 'تطبيق ويب سريع مدمج داخل تيليجرام',
-    category: 'Web',
-    categories: ['Web', 'iOS & Mobile'],
-    tags: [
-      { label: 'Web' },
-      { label: 'Figma', icon: <FigmaIcon /> },
-    ],
-    image: '/projects/solanatap.jpg',
-    client: 'Tap Labs Global',
-    scopeEn: 'Custom Telegram Mini-App architecture with micro-transaction support, real-time balance sync, and anti-fraud rate limiting',
-    scopeAr: 'بنية تطبيق مصغر لتيليجرام يدعم المعاملات الدقيقة وتزامن الرصيد المباشر وحماية متقدمة من التلاعب',
-    impactEn: 'Onboarded 1.4 million active users in 3 weeks with zero server bottlenecks',
-    impactAr: 'استقطاب أكثر من 1.4 مليون مستخدم نشط خلال 3 أسابيع بدون أي انقطاع بالخوادم',
-    techStack: ['React 19', 'Telegram Mini Apps SDK', 'Node.js', 'Redis', 'PostgreSQL'],
-  },
-  {
-    id: 'al-rayyan-vault',
-    title: 'Al Rayyan Mobile Vault',
-    subtitleEn: 'Native iOS & Android Biometric Banking App',
-    subtitleAr: 'تطبيق الخدمات المصرفية المتقدمة بالبصمة البيومترية والمصادقة الآمنة',
-    category: 'iOS & Mobile',
-    categories: ['iOS & Mobile'],
-    tags: [
-      { label: 'iOS & Mobile' },
-      { label: 'Swift' },
-      { label: 'Flutter' },
-    ],
-    image: '/projects/solanatap.jpg',
-    client: 'Al Rayyan Financial Group',
-    scopeEn: 'Native iOS Swift & Flutter cross-platform banking client with FaceID authentication, hardware key encryption, and sub-second transaction routing',
-    scopeAr: 'تطبيق جوال أصيل مبني بـ Swift و Flutter مع دعم FaceID وتشفير بالمفاتيح المادية ومزامنة فورية للعمليات',
-    impactEn: 'Over 450,000 monthly active users with 99.99% uptime and high performance',
-    impactAr: 'أكثر من 450 ألف مستخدم نشط شهرياً مع استقرار برمجي وكفاءة عالية',
-    techStack: ['Flutter', 'iOS Swift', 'Kotlin', 'gRPC', 'PostgreSQL'],
-  },
-  {
-    id: 'doha-fleet-ai',
-    title: 'DohaFleet AI',
-    subtitleEn: 'Autonomous Logistics & Computer Vision Dispatch',
-    subtitleAr: 'منصة التوزيع الذكي وأتمتة حركة الأساطيل بالرؤية الحاسوبية',
-    category: 'AI & Automation',
-    categories: ['AI & Automation'],
-    tags: [
-      { label: 'AI & Automation' },
-      { label: 'Computer Vision' },
-      { label: 'Python' },
-    ],
-    image: '/hero-slide-2.jpg',
-    client: 'Qatar Logistics Holdings',
-    scopeEn: 'Real-time fleet telemetry, predictive demand modeling, automated route allocation, and Meta WhatsApp Cloud notifications',
-    scopeAr: 'تتبع مباشر لأسطول النقل ونمذجة تنبؤية للطلب وتوزيع تلقائي للمسارات مع إشعارات فورية عبر واتساب',
-    impactEn: 'Reduced fleet turnaround time by 34% across industrial zones',
-    impactAr: 'تخفيض زمن الاستجابة والتوصيل بنسبة 34% في المناطق الصناعية',
-    techStack: ['Python', 'FastAPI', 'YOLOv8', 'Redis', 'PostgreSQL'],
-  },
-  {
-    id: 'whatsapp-concierge',
-    title: 'Concierge AI',
-    subtitleEn: 'Automated WhatsApp Booking & Lead Conversion Agent',
-    subtitleAr: 'وكيل خدمة عملاء ذكي عبر واتساب لحجز المواعيد وتأهيل الطلبات',
-    category: 'AI & Automation',
-    categories: ['AI & Automation', 'iOS & Mobile'],
-    tags: [
-      { label: 'AI & Automation' },
-      { label: 'Meta API' },
-      { label: 'NLP' },
-    ],
-    image: '/hero-slide-2.jpg',
-    client: 'Doha Medical & Hospitality Network',
-    scopeEn: 'Official WhatsApp Cloud API bot trained on custom enterprise knowledge base, handling 24/7 inquiries in Arabic and English with sub-second response',
-    scopeAr: 'ربط رسمي مع WhatsApp Cloud API مدعوم بالذكاء الاصطناعي للرد على استفسارات العملاء بالعربية والإنجليزية على مدار الساعة',
-    impactEn: 'Processed 120,000+ patient inquiries with 92% automated resolution rate',
-    impactAr: 'معالجة أكثر من 120 ألف استفسار بنسبة حل تلقائي تجاوزت 92%',
-    techStack: ['Python', 'Meta Cloud API', 'FastAPI', 'LangChain', 'Redis'],
-  },
-  {
-    id: 'nexura-erp',
-    title: 'Nexura Commerce & ERP',
-    subtitleEn: 'Enterprise E-Commerce & Multi-Warehouse Sync',
-    subtitleAr: 'متجر ومنصة تجارة إلكترونية متكاملة مع مزامنة المستودعات وسلاسل الإمداد',
-    category: 'Ecommerce',
-    categories: ['Ecommerce', 'Web'],
-    tags: [
-      { label: 'E-Commerce' },
-      { label: 'React 19' },
-      { label: 'Docker' },
-    ],
-    image: '/hero-slide-1.jpg',
-    client: 'Qatar Commercial Consortium',
-    scopeEn: 'Multi-tenant E-Commerce & ERP architecture with checkout, inventory sync, automated invoice generation, and warehouse barcode sync',
-    scopeAr: 'متجر إلكتروني ونظام ERP متعدد الفروع بصلاحيات دقيقة وتتبع تدقيق مالي وفواتير آلية ومزامنة فورية لباركود المستودعات',
-    impactEn: 'Integrated 8 regional distribution centers with 99.99% operational continuity',
-    impactAr: 'ربط 8 مراكز توزيع إقليمية مع ضمان استمرارية تشغيلية بنسبة 99.99%',
-    techStack: ['React 19', 'Node.js', 'PostgreSQL', 'Docker', 'Prisma'],
-  },
-  {
-    id: 'cryptomus',
-    title: 'Cryptomus',
-    subtitleEn: 'Digital payment gateway platform & web experience',
-    subtitleAr: 'بوابة دفع إلكترونية متطورة وتجربة ويب تفاعلية',
-    category: 'Ecommerce',
-    categories: ['Ecommerce', 'Web'],
-    tags: [
-      { label: 'E-Commerce' },
-      { label: 'Payments' },
-      { label: 'Ae', icon: <AfterEffectsIcon /> },
-    ],
-    image: '/projects/cryptomus.jpg',
-    client: 'Cryptomus Payments',
-    scopeEn: 'High-converting interactive web experience and checkout gateway for digital merchant payments',
-    scopeAr: 'تصميم وبرمجة واجهات دفع رقمية للمتاجر الإلكترونية مع تجربة ويب تفاعلية وسريعة',
-    impactEn: 'Generated 3.2M views across social platforms and increased API signups by 68%',
-    impactAr: 'حصد أكثر من 3.2 مليون مشاهدة ورفع نسبة التسجيل في بوابة المطورين بنسبة 68%',
-    techStack: ['React', 'Next.js', 'TailwindCSS', 'Figma'],
-  },
-  {
-    id: 'x2664',
-    title: 'x2664',
-    subtitleEn: 'Complete design and web trading platform for x2664',
-    subtitleAr: 'تصميم ومنصة ويب متكاملة لـ x2664',
-    category: 'Web',
-    categories: ['Web'],
-    tags: [
-      { label: 'Web' },
-      { label: 'Banners' },
-      { label: 'Blender', icon: <BlenderIcon /> },
-      { label: 'Ae', icon: <AfterEffectsIcon /> },
-    ],
-    image: '/projects/x2664.jpg',
-    client: 'x2664 Trading Network',
-    scopeEn: 'Multi-screen institutional trading cockpit design, dark-mode data density system, and 3D brand assets',
-    scopeAr: 'تصميم منصة تداول مؤسسية متعددة الشاشات مع معالجة بيانات عالية الكثافة وهوية ثلاثية الأبعاد',
-    impactEn: 'Standardised cross-platform UI reducing operator error by 45%',
-    impactAr: 'توحيد واجهات التداول عبر الشاشات وتخفيض أخطاء الإدخال بنسبة 45%',
-    techStack: ['Blender 4.0', 'After Effects', 'Figma', 'WebGL', 'TailwindCSS'],
-  },
-]
+export const projectsData: ProjectItem[] = []
+
+const normalizeCategory = (cat: string): ProjectCategory => {
+  const c = (cat || '').trim().toLowerCase()
+  if (c.includes('web') || c.includes('site') || c.includes('موقع')) return 'Web'
+  if (c.includes('com') || c.includes('shop') || c.includes('store') || c.includes('متجر')) return 'Ecommerce'
+  if (c.includes('mob') || c.includes('ios') || c.includes('android') || c.includes('app') || c.includes('جوال') || c.includes('تطبيق')) return 'iOS & Mobile'
+  if (c.includes('ai') || c.includes('auto') || c.includes('ذكاء') || c.includes('أتمتة')) return 'AI & Automation'
+  return 'Web'
+}
+
+const mapApiProjectToItem = (p: any): ProjectItem => {
+  const rawCat = (p.category || 'Web').trim()
+  const normalizedCat = normalizeCategory(rawCat)
+
+  const rawLink = p.link || (Array.isArray(p.tags) && p.tags[0]?.startsWith('http') ? p.tags[0] : '') || ''
+  const formattedLink = rawLink && !/^https?:\/\//i.test(rawLink) ? `https://${rawLink}` : rawLink
+
+  const tagsList: string[] = Array.isArray(p.tags)
+    ? p.tags.filter((t: string) => !/^https?:\/\//i.test(t))
+    : typeof p.tags === 'string' && !p.tags.startsWith('http')
+    ? p.tags.split(',').map((t: string) => t.trim()).filter(Boolean)
+    : []
+
+  const finalTags = tagsList.length > 0 ? tagsList : [rawCat]
+
+  return {
+    id: String(p.id),
+    title: p.title || 'Untitled Project',
+    subtitleEn: p.description || p.title || 'Software Engineering Project',
+    subtitleAr: p.description || p.title || 'مشروع هندسة برمجية متكامل',
+    category: normalizedCat,
+    rawCategory: rawCat,
+    categories: [normalizedCat],
+    tags: finalTags.map((t: string) => ({ label: t })),
+    image: p.image_url || '/projects/solanatap.jpg',
+    client: p.client || 'JBR Digital Client',
+    scopeEn: p.description || 'Full-cycle engineering architecture, scalable cloud infrastructure and clean modern UI.',
+    scopeAr: p.description || 'تطوير برمجي متكامل ومعمارية برمجية حديثة مع واجهات مستخدم متجاوبة وعالية السرعة.',
+    impactEn: formattedLink ? formattedLink : (Number(p.price) > 0 ? `Starting from $${Number(p.price).toLocaleString()}` : 'Tailored Architecture'),
+    impactAr: formattedLink ? formattedLink : (Number(p.price) > 0 ? `يبدأ من $${Number(p.price).toLocaleString()}` : 'معمارية مخصصة'),
+    techStack: finalTags.length > 0 ? finalTags : ['React', 'TypeScript', 'TailwindCSS'],
+    isFeatured: Boolean(p.is_featured),
+    link: formattedLink,
+  }
+}
 
 export const ProjectsShowcase: React.FC<{
   limit?: number
@@ -258,62 +123,62 @@ export const ProjectsShowcase: React.FC<{
   const isRTL = i18n.language === 'ar'
   const [activeTab, setActiveTab] = useState<'All' | ProjectCategory>(defaultTab)
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null)
-  const [allProjects, setAllProjects] = useState<ProjectItem[]>(projectsData)
+  const [allProjects, setAllProjects] = useState<ProjectItem[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
 
-  useEffect(() => {
-    let isMounted = true
-    api.get('/projects?active_only=1')
-      .then((res) => {
-        if (!isMounted) return
-        const list = Array.isArray(res.data) ? res.data : res.data?.data || []
-        if (list.length > 0) {
-          const mapped: ProjectItem[] = list.map((p: any) => {
-            const existing = projectsData.find(
-              (item) => item.title.toLowerCase() === p.title.toLowerCase()
-            )
-            const catMap: Record<string, ProjectCategory> = {
-              Web: 'Web',
-              Ecommerce: 'Ecommerce',
-              'E-Commerce': 'Ecommerce',
-              Mobile: 'iOS & Mobile',
-              'iOS & Mobile': 'iOS & Mobile',
-              AI: 'AI & Automation',
-              'AI & Automation': 'AI & Automation',
-              ERP: 'Web',
-            }
-            const normalizedCat: ProjectCategory = catMap[p.category] || 'Web'
+  const loadProjects = React.useCallback(async () => {
+    try {
+      const res = await api.get('/projects?active_only=1')
+      const remoteList = Array.isArray(res.data) ? res.data : res.data?.data || []
+      
+      let localList: any[] = []
+      try {
+        const raw = localStorage.getItem('jbr_custom_projects')
+        localList = raw ? JSON.parse(raw) : []
+      } catch {
+        localList = []
+      }
 
-            return {
-              id: String(p.id),
-              title: p.title,
-              subtitleEn: p.description || p.title,
-              subtitleAr: p.description || p.title,
-              category: normalizedCat,
-              categories: [normalizedCat],
-              tags: Array.isArray(p.tags) && p.tags.length > 0
-                ? p.tags.map((t: string) => ({ label: t }))
-                : existing?.tags || [{ label: normalizedCat }],
-              image: p.image_url || existing?.image || '/projects/solanatap.jpg',
-              client: existing?.client || 'JBR Digital Client',
-              scopeEn: p.description || existing?.scopeEn || '',
-              scopeAr: p.description || existing?.scopeAr || '',
-              impactEn: p.price > 0 ? `Starting from $${Number(p.price).toLocaleString()}` : (existing?.impactEn || ''),
-              impactAr: p.price > 0 ? `يبدأ من $${Number(p.price).toLocaleString()}` : (existing?.impactAr || ''),
-              techStack: Array.isArray(p.tags) ? p.tags : existing?.techStack || ['React', 'TypeScript'],
-              isFeatured: p.is_featured ?? existing?.isFeatured,
-            }
-          })
-          setAllProjects(mapped)
+      const mergedMap = new Map<string | number, any>()
+      remoteList.filter((p: any) => p.is_active !== false).forEach((p: any) => mergedMap.set(p.id, p))
+      localList.filter((p: any) => p.is_active !== false).forEach((p: any) => {
+        if (!mergedMap.has(p.id)) {
+          mergedMap.set(p.id, p)
         }
       })
-      .catch(() => {
-        // Keep initial projectsData fallback
-      })
 
-    return () => {
-      isMounted = false
+      const combined = Array.from(mergedMap.values())
+      setAllProjects(combined.map(mapApiProjectToItem))
+    } catch {
+      // Offline fallback: load from localStorage
+      try {
+        const raw = localStorage.getItem('jbr_custom_projects')
+        const localList: any[] = raw ? JSON.parse(raw) : []
+        const activeOnly = localList.filter((p: any) => p.is_active !== false)
+        setAllProjects(activeOnly.map(mapApiProjectToItem))
+      } catch {
+        setAllProjects([])
+      }
+    } finally {
+      setLoading(false)
     }
   }, [])
+
+  useEffect(() => {
+    loadProjects()
+
+    const handleUpdate = () => {
+      loadProjects()
+    }
+
+    window.addEventListener('projects_updated', handleUpdate)
+    window.addEventListener('storage', handleUpdate)
+
+    return () => {
+      window.removeEventListener('projects_updated', handleUpdate)
+      window.removeEventListener('storage', handleUpdate)
+    }
+  }, [loadProjects])
 
   const filterTabs: Array<{ id: 'All' | ProjectCategory; labelEn: string; labelAr: string; isAllAction?: boolean }> = [
     { id: 'Web', labelEn: 'Websites', labelAr: 'موقع إلكتروني' },
@@ -325,7 +190,11 @@ export const ProjectsShowcase: React.FC<{
 
   const filteredProjects = allProjects.filter((p) => {
     if (activeTab === 'All') return true
-    return p.category === activeTab || p.categories?.includes(activeTab)
+    return (
+      p.category === activeTab ||
+      p.categories?.includes(activeTab) ||
+      normalizeCategory(p.rawCategory || '') === activeTab
+    )
   })
 
   const displayList = limit ? filteredProjects.slice(0, limit) : filteredProjects
@@ -351,7 +220,7 @@ export const ProjectsShowcase: React.FC<{
           <div className="flex flex-col items-center text-center mb-10">
             {showTitle && (
               <>
-                {/* Title - exactly as in Screenshot 1 */}
+                {/* Title */}
                 <h2
                   className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3"
                   style={{ letterSpacing: '-0.025em' }}
@@ -367,7 +236,7 @@ export const ProjectsShowcase: React.FC<{
                   )}
                 </h2>
 
-                {/* Subtitle Pill Capsule - exactly as in Screenshot 1 */}
+                {/* Subtitle Pill Capsule */}
                 <div
                   className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium mb-8"
                   style={{
@@ -432,106 +301,216 @@ export const ProjectsShowcase: React.FC<{
           </div>
         )}
 
-        {/* 3-Column Responsive Card Showcase Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6 mt-6">
-          {displayList.map((project) => {
-            const isSelected = project.isFeatured || (activeTab === 'Web' && project.id === 'aura-store')
-            return (
-              <article
-                key={project.id}
-                onClick={() => setSelectedProject(project)}
-                className="group relative rounded-xl sm:rounded-2xl p-3 sm:p-3.5 cursor-pointer transition-all duration-300 transform hover:-translate-y-1"
+        {/* Projects Display or Colorful Animated Empty State */}
+        {displayList.length === 0 ? (
+          <div
+            className="animated-empty-card mt-8 py-16 sm:py-20 px-6 rounded-2xl sm:rounded-3xl border text-center relative overflow-hidden flex flex-col items-center justify-center"
+            style={{
+              backgroundColor: 'var(--bg-card)',
+              borderWidth: '1.5px',
+            }}
+          >
+            {/* Colorful animated ambient background glow */}
+            <div
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 sm:w-96 sm:h-96 rounded-full pointer-events-none opacity-25"
+              style={{
+                background: 'radial-gradient(circle, #0055FF 0%, #8B5CF6 35%, #EC4899 65%, transparent 80%)',
+                filter: 'blur(70px)',
+              }}
+              aria-hidden="true"
+            />
+
+            {/* Elegant Animated Floating Icon */}
+            <div
+              className="animated-empty-icon relative mb-5 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center"
+              style={{
+                background: 'linear-gradient(135deg, rgba(0, 85, 255, 0.18), rgba(139, 92, 246, 0.18))',
+                border: '1.5px solid rgba(0, 163, 255, 0.35)',
+                boxShadow: '0 10px 25px rgba(0, 85, 255, 0.25)',
+              }}
+            >
+              <svg
+                width="34"
+                height="34"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="url(#empty-gradient)"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <defs>
+                  <linearGradient id="empty-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#00A3FF" />
+                    <stop offset="50%" stopColor="#8B5CF6" />
+                    <stop offset="100%" stopColor="#EC4899" />
+                  </linearGradient>
+                </defs>
+                <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z" />
+                <path d="m9 13 2 2 4-4" />
+              </svg>
+            </div>
+
+            {/* The animated colored phrase: "No projects yet" / "لا توجد مشاريع حتى الآن" */}
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight animated-rainbow-text mb-2">
+              {isRTL ? 'لا توجد مشاريع حتى الآن' : 'No projects yet'}
+            </h3>
+
+            {/* Subtitle / explanation */}
+            <p
+              className="text-xs sm:text-sm mt-1 max-w-md mx-auto leading-relaxed"
+              style={{ color: 'var(--text-secondary)' }}
+            >
+              {isRTL
+                ? 'لم يتم إضافة أي مشاريع في هذا القسم حتى الآن، سيتم نشر مشاريع جديدة فور إضافتها من قبل الإدارة.'
+                : 'No projects have been published in this section yet. New projects added by the admin will appear here.'}
+            </p>
+
+            {/* If admin is logged in, show a quick shortcut button to add a project */}
+            {Boolean(localStorage.getItem('admin_token')) && (
+              <Link
+                to="/admin/projects"
+                className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold text-white shadow-lg transition-transform hover:scale-105"
                 style={{
-                  backgroundColor: 'var(--bg-card)',
-                  border: isSelected
-                    ? '1.5px solid #0055FF'
-                    : '1px solid var(--border-color)',
-                  boxShadow: isSelected
-                    ? '0 0 20px rgba(0, 85, 255, 0.2), 0 15px 35px -10px rgba(0, 0, 0, 0.7)'
-                    : '0 15px 35px -10px rgba(0, 0, 0, 0.6)',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = '#00A3FF'
-                  e.currentTarget.style.boxShadow = '0 0 25px rgba(0, 163, 255, 0.28), 0 18px 40px -8px rgba(0, 0, 0, 0.8)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = isSelected ? '#0055FF' : 'var(--border-color)'
-                  e.currentTarget.style.boxShadow = isSelected
-                    ? '0 0 20px rgba(0, 85, 255, 0.2), 0 15px 35px -10px rgba(0, 0, 0, 0.7)'
-                    : '0 15px 35px -10px rgba(0, 0, 0, 0.6)'
+                  background: 'linear-gradient(135deg, #0055FF, #00A3FF)',
+                  textDecoration: 'none',
                 }}
               >
-                {/* Media Container with Framed Mockup */}
-                <div
-                  className="relative w-full aspect-[16/10] rounded-lg sm:rounded-xl overflow-hidden mb-3 bg-black/60"
+                <span>+</span>
+                <span>{isRTL ? 'إضافة مشروع جديد كمسؤول' : 'Add New Project'}</span>
+              </Link>
+            )}
+          </div>
+        ) : (
+          /* 3-Column Responsive Card Showcase Grid */
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6 mt-6">
+            {displayList.map((project) => {
+              const isSelected = Boolean(project.isFeatured)
+              return (
+                <article
+                  key={project.id}
+                  onClick={() => setSelectedProject(project)}
+                  className="group relative rounded-xl sm:rounded-2xl p-3 sm:p-3.5 cursor-pointer transition-all duration-300 transform hover:-translate-y-1"
                   style={{
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    backgroundColor: 'var(--bg-card)',
+                    border: isSelected
+                      ? '1.5px solid #0055FF'
+                      : '1px solid var(--border-color)',
+                    boxShadow: isSelected
+                      ? '0 0 20px rgba(0, 85, 255, 0.2), 0 15px 35px -10px rgba(0, 0, 0, 0.7)'
+                      : '0 15px 35px -10px rgba(0, 0, 0, 0.6)',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = '#00A3FF'
+                    e.currentTarget.style.boxShadow = '0 0 25px rgba(0, 163, 255, 0.28), 0 18px 40px -8px rgba(0, 0, 0, 0.8)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = isSelected ? '#0055FF' : 'var(--border-color)'
+                    e.currentTarget.style.boxShadow = isSelected
+                      ? '0 0 20px rgba(0, 85, 255, 0.2), 0 15px 35px -10px rgba(0, 0, 0, 0.7)'
+                      : '0 15px 35px -10px rgba(0, 0, 0, 0.6)'
                   }}
                 >
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
-                    loading="lazy"
-                  />
-
-                  {/* Subtle inner dark vignette gradient */}
+                  {/* Media Container with Framed Mockup */}
                   <div
-                    className="absolute inset-0 pointer-events-none"
+                    className="relative w-full aspect-[16/10] rounded-lg sm:rounded-xl overflow-hidden mb-3 bg-black/60"
                     style={{
-                      background: 'linear-gradient(180deg, transparent 50%, rgba(10, 15, 29, 0.75) 100%)',
+                      border: '1px solid rgba(255, 255, 255, 0.08)',
                     }}
-                  />
+                  >
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                      loading="lazy"
+                    />
 
-                  {/* Floating Badges at Bottom-Left of Image */}
-                  <div className="absolute bottom-2.5 left-2.5 flex flex-wrap items-center gap-1 z-10">
-                    {project.tags.map((tag, tIdx) => (
-                      <div
-                        key={tIdx}
-                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium text-white/95 backdrop-blur-md"
+                    {/* Subtle inner dark vignette gradient */}
+                    <div
+                      className="absolute inset-0 pointer-events-none"
+                      style={{
+                        background: 'linear-gradient(180deg, transparent 50%, rgba(10, 15, 29, 0.75) 100%)',
+                      }}
+                    />
+
+                    {/* Floating Badges at Bottom-Left of Image */}
+                    <div className="absolute bottom-2.5 left-2.5 flex flex-wrap items-center gap-1 z-10">
+                      {project.tags.map((tag, tIdx) => (
+                        <div
+                          key={tIdx}
+                          className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium text-white/95 backdrop-blur-md"
+                          style={{
+                            background: 'rgba(15, 23, 42, 0.8)',
+                            border: '1px solid rgba(255, 255, 255, 0.15)',
+                            boxShadow: '0 4px 10px rgba(0,0,0,0.4)',
+                          }}
+                        >
+                          {tag.icon && <span>{tag.icon}</span>}
+                          <span>{tag.label}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Top-Right Quick View / External Link Trigger Icon */}
+                    {project.link ? (
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center text-white/90 hover:text-white hover:bg-[#0055FF] hover:border-[#0055FF] transition-all duration-300 z-20"
+                        title={isRTL ? 'زيارة رابط المشروع في نافذة جديدة' : 'Open project in new tab'}
+                      >
+                        <LaunchIcon sx={{ fontSize: 13 }} />
+                      </a>
+                    ) : (
+                      <div className="absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center text-white/90 group-hover:text-white group-hover:bg-[#0055FF] group-hover:border-[#0055FF] transition-all duration-300">
+                        <LaunchIcon sx={{ fontSize: 13 }} />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Content Area */}
+                  <div className="px-1.5 pb-1 text-start">
+                    <div className="flex items-center justify-between gap-2">
+                      <h3
+                        className="text-base sm:text-lg font-bold tracking-tight transition-colors duration-200 line-clamp-1"
                         style={{
-                          background: 'rgba(15, 23, 42, 0.8)',
-                          border: '1px solid rgba(255, 255, 255, 0.15)',
-                          boxShadow: '0 4px 10px rgba(0,0,0,0.4)',
+                          color: isSelected ? 'var(--electric-blue)' : 'var(--text-primary)',
+                          letterSpacing: '-0.02em',
                         }}
                       >
-                        {tag.icon && <span>{tag.icon}</span>}
-                        <span>{tag.label}</span>
-                      </div>
-                    ))}
+                        {project.title}
+                      </h3>
+                      {project.link && (
+                        <a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#00A3FF] hover:text-white hover:underline transition-colors flex-shrink-0"
+                          title={isRTL ? 'فتح رابط المشروع' : 'Visit project'}
+                        >
+                          <span>{isRTL ? 'زيارة' : 'Visit'}</span>
+                          <LaunchIcon sx={{ fontSize: 11 }} />
+                        </a>
+                      )}
+                    </div>
+                    <p
+                      className="text-xs mt-1 line-clamp-1 font-normal"
+                      style={{ color: 'var(--text-secondary)' }}
+                    >
+                      {isRTL ? project.subtitleAr : project.subtitleEn}
+                    </p>
                   </div>
+                </article>
+              )
+            })}
+          </div>
+        )}
 
-                  {/* Top-Right Quick View Trigger Icon */}
-                  <div className="absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center text-white/90 group-hover:text-white group-hover:bg-[#0055FF] group-hover:border-[#0055FF] transition-all duration-300">
-                    <LaunchIcon sx={{ fontSize: 13 }} />
-                  </div>
-                </div>
-
-                {/* Content Area */}
-                <div className="px-1.5 pb-1 text-start">
-                  <h3
-                    className="text-base sm:text-lg font-bold tracking-tight transition-colors duration-200"
-                    style={{
-                      color: isSelected ? 'var(--electric-blue)' : 'var(--text-primary)',
-                      letterSpacing: '-0.02em',
-                    }}
-                  >
-                    {project.title}
-                  </h3>
-                  <p
-                    className="text-xs mt-1 line-clamp-1 font-normal"
-                    style={{ color: 'var(--text-secondary)' }}
-                  >
-                    {isRTL ? project.subtitleAr : project.subtitleEn}
-                  </p>
-                </div>
-              </article>
-            )
-          })}
-        </div>
-
-        {/* View All Projects CTA button - matching Screenshot 1 */}
-        {showFooterCta && (
+        {/* View All Projects CTA button */}
+        {showFooterCta && allProjects.length > 0 && (
           <div className="text-center mt-12">
             <Link
               to="/projects"
@@ -660,10 +639,22 @@ export const ProjectsShowcase: React.FC<{
                     <CheckCircleOutlinedIcon sx={{ color: '#22c55e', fontSize: 22, mt: 0.3 }} />
                     <div>
                       <div className="text-xs font-bold uppercase tracking-wider mb-0.5" style={{ color: 'var(--text-primary)' }}>
-                        {isRTL ? 'الأثر والنتائج' : 'Measured Impact & Performance'}
+                        {selectedProject.link ? (isRTL ? 'رابط المشروع المباشر' : 'Live Project URL') : (isRTL ? 'الأثر والنتائج' : 'Measured Impact & Performance')}
                       </div>
                       <div className="text-xs sm:text-sm" style={{ color: 'var(--text-secondary)' }}>
-                        {isRTL ? selectedProject.impactAr : selectedProject.impactEn}
+                        {selectedProject.link ? (
+                          <a
+                            href={selectedProject.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-400 hover:text-blue-300 hover:underline inline-flex items-center gap-1 font-medium break-all"
+                          >
+                            <span>{selectedProject.link}</span>
+                            <LaunchIcon sx={{ fontSize: 13 }} />
+                          </a>
+                        ) : (
+                          isRTL ? selectedProject.impactAr : selectedProject.impactEn
+                        )}
                       </div>
                     </div>
                   </div>
@@ -712,14 +703,31 @@ export const ProjectsShowcase: React.FC<{
                     ? 'تم تنفيذ المشروع بمعايير الجودة والأمان لشركة JBR Digital قطر'
                     : 'Engineered in accordance with JBR Digital Qatar production standards.'}
                 </div>
-                <Link
-                  to="/contact"
-                  className="btn-primary text-xs px-5 py-2.5 font-bold flex items-center gap-2"
-                  style={{ textDecoration: 'none' }}
-                >
-                  <span>{isRTL ? 'طلب استشارة مماثلة' : 'Request Similar Architecture'}</span>
-                  <ArrowForwardIcon sx={{ fontSize: 14 }} />
-                </Link>
+                <div className="flex items-center gap-2">
+                  {selectedProject.link && (
+                    <a
+                      href={selectedProject.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-primary text-xs px-5 py-2.5 font-bold flex items-center gap-2"
+                      style={{
+                        textDecoration: 'none',
+                        background: 'linear-gradient(135deg, #0055FF, #00A3FF)',
+                      }}
+                    >
+                      <span>{isRTL ? 'زيارة رابط المشروع' : 'Visit Live Project'}</span>
+                      <LaunchIcon sx={{ fontSize: 14 }} />
+                    </a>
+                  )}
+                  <Link
+                    to="/contact"
+                    className="btn-secondary text-xs px-4 py-2.5 font-bold flex items-center gap-2"
+                    style={{ textDecoration: 'none' }}
+                  >
+                    <span>{isRTL ? 'طلب استشارة' : 'Consultation'}</span>
+                    <ArrowForwardIcon sx={{ fontSize: 14, transform: isRTL ? 'rotate(180deg)' : 'none' }} />
+                  </Link>
+                </div>
               </div>
             </DialogContent>
           </div>

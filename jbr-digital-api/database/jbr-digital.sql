@@ -31,13 +31,7 @@ CREATE TABLE `projects` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-INSERT INTO `projects` (`id`, `title`, `description`, `image_url`, `tags`, `price`, `category`, `is_active`, `is_featured`, `created_at`, `updated_at`) VALUES ('1', 'Aura Luxe Store', 'متجر إلكتروني متقدم للمنتجات الفاخرة مع بوابة دفع ذكية وتتبع المخزون والطلبات لحظياً.', '/projects/aura-store.jpg', '[\"React\",\"TypeScript\",\"TailwindCSS\",\"Stripe\"]', '1300.00', 'E-Commerce', '1', '1', '2026-11-05 16:09:52', '2026-11-05 18:04:57');
-INSERT INTO `projects` (`id`, `title`, `description`, `image_url`, `tags`, `price`, `category`, `is_active`, `is_featured`, `created_at`, `updated_at`) VALUES ('2', 'QuantumYield', 'منصة تحسين عوائد مالية لا مركزية بالذكاء الاصطناعي مع لوحة تحكم فورية.', '/projects/quantumyield.jpg', '[\"React\",\"TypeScript\",\"TailwindCSS\",\"Web3\"]', '1400.00', 'Web', '1', '1', '2026-11-05 16:09:52', '2026-11-05 18:04:57');
-INSERT INTO `projects` (`id`, `title`, `description`, `image_url`, `tags`, `price`, `category`, `is_active`, `is_featured`, `created_at`, `updated_at`) VALUES ('3', 'SolanaTap', 'تطبيق ويب سريع مدمج داخل تيليجرام مع مزامنة المعاملات اللحظية وحماية عالية.', '/projects/solanatap.jpg', '[\"React 19\",\"Telegram SDK\",\"Node.js\"]', '950.00', 'Web', '1', '1', '2026-11-05 16:09:52', '2026-11-05 18:04:57');
-INSERT INTO `projects` (`id`, `title`, `description`, `image_url`, `tags`, `price`, `category`, `is_active`, `is_featured`, `created_at`, `updated_at`) VALUES ('4', 'Al Rayyan Mobile Vault', 'تطبيق جوال مالي آمن لإدارة الحسابات والمدفوعات اللحظية مع تشفير مصرفي.', 'http://localhost:8000/uploads/projects/proj_1793902607_Wv2Xruk1.webp', '[\"Flutter\",\"iOS\",\"Android\",\"Biometrics\"]', '2100.00', 'Mobile', '1', '0', '2026-11-05 16:09:52', '2026-11-05 18:16:52');
-INSERT INTO `projects` (`id`, `title`, `description`, `image_url`, `tags`, `price`, `category`, `is_active`, `is_featured`, `created_at`, `updated_at`) VALUES ('5', 'Doha AI Logistics Suite', 'نظام ERP متكامل لإدارة الشحنات والأسطول في الدوحة مدعوم بالذكاء الاصطناعي وتتبع GPS.', 'http://localhost:8000/uploads/projects/proj_1793902762_y0Un02NN.webp', '[\"Laravel 11\",\"Vue.js\",\"PostgreSQL\",\"AI Dispatch\"]', '3200.00', 'ERP', '1', '0', '2026-11-05 16:09:52', '2026-11-05 18:19:24');
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `chatbot_configs`;
 CREATE TABLE `chatbot_configs` (

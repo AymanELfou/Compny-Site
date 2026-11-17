@@ -38,25 +38,19 @@ class ChatController extends Controller
         }
 
         // 2. Build full composite system instructions
-        $compositeSystemPrompt = <<<EOT
-{$systemPromptText}
+        $compositeSystemPrompt = $systemPromptText;
 
-=== OFFICIAL AGENCY DETAILS ===
-{$companyInfo}
+        if (!empty(trim($companyInfo))) {
+            $compositeSystemPrompt .= "\n\n=== OFFICIAL AGENCY DETAILS ===\n" . trim($companyInfo);
+        }
 
-=== PRICING & QUOTATION RULES ===
-{$pricingContext}
+        if (!empty(trim($pricingContext))) {
+            $compositeSystemPrompt .= "\n\n=== PRICING & QUOTATION RULES ===\n" . trim($pricingContext);
+        }
 
-=== OUR PORTFOLIO & RECENT PROJECTS ===
-{$projectsList}
-
-=== STRICT GUIDELINES ===
-1. Always maintain a polite, respectful, and professional tone in Arabic or English according to the user's language.
-2. If asked about prices, provide the relevant project price or starting range in US Dollars ($ USD) based on the context above.
-3. If asked about projects, recommend relevant examples from our portfolio above.
-4. Encourage clients to book a free consultation or chat directly via official WhatsApp: +974 7137 7713.
-5. If you do not have specific information, invite the client to WhatsApp for an exact proposal.
-EOT;
+        if (!empty($projectsList)) {
+            $compositeSystemPrompt .= "\n\n=== OUR PORTFOLIO & RECENT PROJECTS ===\n" . $projectsList;
+        }
 
         // 3. Prepare messages payload for OpenAI
         $messages = [

@@ -12,16 +12,23 @@ export const ChatbotConfigEditor: React.FC = () => {
   const isRTL = i18n.language === 'ar';
   const { config, loading, saving, error, success, setSuccess, fetchConfig, updateConfig } = useChatbotConfig();
 
-  const [systemPrompt, setSystemPrompt] = useState('');
-  const [companyInfo, setCompanyInfo] = useState('');
-  const [pricingContext, setPricingContext] = useState('');
+  const [fullPrompt, setFullPrompt] = useState('');
 
-  // Sync state when config is loaded
+  // Sync state when config is loaded: combine into a single complete prompt
   useEffect(() => {
     if (config) {
-      setSystemPrompt(config.system_prompt || '');
-      setCompanyInfo(config.company_info || '');
-      setPricingContext(config.pricing_context || '');
+      let combined = (config.system_prompt || '').trim();
+      const company = (config.company_info || '').trim();
+      const pricing = (config.pricing_context || '').trim();
+
+      if (company && !combined.includes(company)) {
+        combined += (combined ? '\n\n=== معلومات الشركة والخدمات ===\n' : '') + company;
+      }
+      if (pricing && !combined.includes(pricing)) {
+        combined += (combined ? '\n\n=== سياق الأسعار وقواعد الرد ===\n' : '') + pricing;
+      }
+
+      setFullPrompt(combined);
     }
   }, [config]);
 
@@ -29,9 +36,9 @@ export const ChatbotConfigEditor: React.FC = () => {
     e.preventDefault();
     try {
       await updateConfig({
-        system_prompt: systemPrompt,
-        company_info: companyInfo,
-        pricing_context: pricingContext,
+        system_prompt: fullPrompt,
+        company_info: '',
+        pricing_context: '',
       });
       setTimeout(() => setSuccess(null), 4000);
     } catch {
@@ -46,12 +53,12 @@ export const ChatbotConfigEditor: React.FC = () => {
         <div>
           <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
             <SmartToyOutlinedIcon style={{ color: 'var(--electric-blue)' }} />
-            <span>{isRTL ? 'إعدادات وقاعدة معرفة المساعد الذكي' : 'AI Assistant Knowledge Base'}</span>
+            <span>{isRTL ? 'إعدادات وموجه المساعد الذكي' : 'AI Assistant System Prompt'}</span>
           </h1>
           <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
             {isRTL
-              ? 'تخصيص سلوك الذكاء الاصطناعي ومعلومات الشركة وقواعد التسعير للرد على العملاء'
-              : 'Customize the AI chatbot instructions, company profile, and dynamic pricing rules'}
+              ? 'إدارة الموجه الكامل للذكاء الاصطناعي ومعلومات الشركة وقواعد الرد في حقل موحد'
+              : 'Manage the complete AI assistant prompt, company background, and conversation rules in a single field'}
           </p>
         </div>
 
@@ -71,7 +78,7 @@ export const ChatbotConfigEditor: React.FC = () => {
       {success && (
         <div className="p-4 rounded-xl text-sm border bg-emerald-500/10 border-emerald-500/30 text-emerald-400 flex items-center gap-2">
           <CheckCircleOutlinedIcon fontSize="small" />
-          <span>{isRTL ? 'تم حفظ إعدادات المساعد الذكي بنجاح!' : success}</span>
+          <span>{isRTL ? 'تم حفظ موجه المساعد الذكي بنجاح!' : success}</span>
         </div>
       )}
 
@@ -93,23 +100,23 @@ export const ChatbotConfigEditor: React.FC = () => {
         <InfoOutlinedIcon style={{ color: 'var(--electric-blue)', fontSize: 20 }} className="flex-shrink-0 mt-0.5" />
         <div>
           <span className="font-semibold text-white block mb-0.5">
-            {isRTL ? 'كيف يعمل المساعد الذكي تلقائياً' : 'How the Dynamic AI Works:'}
+            {isRTL ? 'الموجه الكامل الموحد (Unified Prompt)' : 'Unified Complete Prompt:'}
           </span>
           {isRTL
-            ? 'يقوم الخادم تلقائياً بدمج هذه الإعدادات مع أحدث قائمة بالمشاريع النشطة وأسعارها من قاعدة البيانات لتزويد العميل دائماً بأحدث المعلومات بدقة واحترافية'
-            : 'The backend merges this prompt with the latest active projects and prices from the database in real-time, giving clients accurate, up-to-date answers.'}
+            ? 'تم دمج كافة حقول الإعدادات في حقل واحد مباشر. يمكنك كتابة تعليمات الذكاء الاصطناعي، أسلوب الرد، معلومات الشركة، والأسعار هنا بكل سهولة.'
+            : 'All configuration inputs are merged into one prompt field. You can define instructions, company details, tone, and pricing guidelines here seamlessly.'}
         </div>
       </div>
 
-      {/* Form */}
+      {/* Form with SINGLE complete prompt input */}
       {loading && !config ? (
         <div className="py-20 flex flex-col items-center justify-center text-zinc-400">
           <RefreshIcon className="animate-spin text-blue-500 mb-2" fontSize="large" />
-          <p className="text-sm">{isRTL ? 'جاري تحميل الإعدادات...' : 'Loading config...'}</p>
+          <p className="text-sm">{isRTL ? 'جاري تحميل الموجه...' : 'Loading prompt...'}</p>
         </div>
       ) : (
         <form onSubmit={handleSave} className="space-y-6">
-          {/* System Prompt Section */}
+          {/* Single Unified Prompt Section */}
           <div
             className="p-6 rounded-2xl border space-y-3"
             style={{
@@ -117,84 +124,33 @@ export const ChatbotConfigEditor: React.FC = () => {
               borderColor: 'var(--border-color)',
             }}
           >
-            <div>
-              <label className="block text-sm font-bold text-white mb-1">
-                {isRTL ? 'التعليمات وسلوك المساعد (System Prompt)' : 'System Prompt & Persona'}
-              </label>
-              <p className="text-xs text-zinc-400">
-                {isRTL
-                  ? 'يحدد أسلوب التحدث واللهجة وطريقة التعامل مع استفسارات العملاء'
-                  : 'Defines the AI persona, tone, language, and guidelines for answering.'}
-              </p>
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div>
+                <label className="block text-sm font-bold text-white mb-1">
+                  {isRTL ? 'موجه المساعد الذكي الكامل (Complete System Prompt)' : 'Complete Chatbot System Prompt'}
+                </label>
+                <p className="text-xs text-zinc-400">
+                  {isRTL
+                    ? 'يحدد شخصية المساعد، اختصاصاته، معلومات الشركة الرسمية، وسياسات الرد على الزوار'
+                    : 'Defines the full AI persona, company background, services, policies, and behavior.'}
+                </p>
+              </div>
+              <div className="text-xs text-zinc-500 font-mono">
+                {fullPrompt.length} {isRTL ? 'حرف' : 'characters'}
+              </div>
             </div>
+
             <textarea
-              rows={5}
-              value={systemPrompt}
-              onChange={(e) => setSystemPrompt(e.target.value)}
-              placeholder="You are JBR Digital AI Assistant, representing an elite Qatari software development agency..."
+              rows={15}
+              required
+              value={fullPrompt}
+              onChange={(e) => setFullPrompt(e.target.value)}
+              placeholder={
+                isRTL
+                  ? 'أنت المساعد الذكي الرسمي لشركة JBR Digital...\n\nمعلومات الشركة والخدمات:\n- تطوير مواقع وتطبيقات الويب...\n\nقواعد الرد والأسعار:\n- تحدث باحترافية...\n- شجع العميل على التواصل عبر واتساب...'
+                  : 'You are JBR Digital AI Assistant, representing an elite Qatari software development agency...\n\nCompany Information:\n- Bespoke Web & Mobile Development...\n\nGuidelines & Pricing:\n- Answer professionally in Arabic or English...\n- Encourage contacting WhatsApp +974 7137 7713...'
+              }
               className="w-full p-4 rounded-xl border text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono leading-relaxed"
-              style={{
-                backgroundColor: 'var(--bg-secondary)',
-                borderColor: 'var(--border-color)',
-              }}
-            />
-          </div>
-
-          {/* Company Info Section */}
-          <div
-            className="p-6 rounded-2xl border space-y-3"
-            style={{
-              backgroundColor: 'var(--bg-card)',
-              borderColor: 'var(--border-color)',
-            }}
-          >
-            <div>
-              <label className="block text-sm font-bold text-white mb-1">
-                {isRTL ? 'معلومات الشركة والخدمات (Company Knowledge)' : 'Company & Services Knowledge'}
-              </label>
-              <p className="text-xs text-zinc-400">
-                {isRTL
-                  ? 'معلومات عن الوكالة: شركة قطرية بإدارة قطرية فروعنا قنوات الاتصال أرقام الواتساب'
-                  : 'Company details, Qatari ownership, contact channels, services offered.'}
-              </p>
-            </div>
-            <textarea
-              rows={5}
-              value={companyInfo}
-              onChange={(e) => setCompanyInfo(e.target.value)}
-              placeholder={isRTL ? 'شركة قطرية رائدة في تطوير البرمجيات والذكاء الاصطناعي...' : 'Company information and background...'}
-              className="w-full p-4 rounded-xl border text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500 leading-relaxed"
-              style={{
-                backgroundColor: 'var(--bg-secondary)',
-                borderColor: 'var(--border-color)',
-              }}
-            />
-          </div>
-
-          {/* Pricing Context Section */}
-          <div
-            className="p-6 rounded-2xl border space-y-3"
-            style={{
-              backgroundColor: 'var(--bg-card)',
-              borderColor: 'var(--border-color)',
-            }}
-          >
-            <div>
-              <label className="block text-sm font-bold text-white mb-1">
-                {isRTL ? 'سياق وسياسات التسعير (Pricing Context)' : 'Pricing Context & Rules'}
-              </label>
-              <p className="text-xs text-zinc-400">
-                {isRTL
-                  ? 'كيف يجيب المساعد عند سؤاله عن الأسعار وشروط الدفع والعملة ريال قطري QAR'
-                  : 'How the AI explains prices, payment terms, and quotes in QAR.'}
-              </p>
-            </div>
-            <textarea
-              rows={4}
-              value={pricingContext}
-              onChange={(e) => setPricingContext(e.target.value)}
-              placeholder={isRTL ? 'الأسعار تبدأ من... والعملة الرسمية هي الريال القطري (QAR)...' : 'Pricing guidelines and starting estimates in QAR...'}
-              className="w-full p-4 rounded-xl border text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500 leading-relaxed"
               style={{
                 backgroundColor: 'var(--bg-secondary)',
                 borderColor: 'var(--border-color)',
@@ -219,8 +175,8 @@ export const ChatbotConfigEditor: React.FC = () => {
                     ? 'جاري الحفظ...'
                     : 'Saving Changes...'
                   : isRTL
-                  ? 'حفظ جميع التعديلات'
-                  : 'Save Configuration'}
+                  ? 'حفظ الموجه بالكامل'
+                  : 'Save Complete Prompt'}
               </span>
             </button>
           </div>

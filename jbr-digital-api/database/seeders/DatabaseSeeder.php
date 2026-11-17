@@ -59,65 +59,6 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // 3. Seed Projects
-        $initialProjects = [
-            [
-                'title' => 'Aura Luxe Store',
-                'description' => 'متجر إلكتروني متقدم للمنتجات الفاخرة مع بوابة دفع ذكية وتتبع المخزون والطلبات لحظياً.',
-                'image_url' => '/projects/aura-store.jpg',
-                'tags' => ['React', 'TypeScript', 'TailwindCSS', 'Stripe'],
-                'price' => 1300.00,
-                'category' => 'E-Commerce',
-                'is_active' => true,
-                'is_featured' => true,
-            ],
-            [
-                'title' => 'QuantumYield',
-                'description' => 'منصة تحسين عوائد مالية لا مركزية بالذكاء الاصطناعي مع لوحة تحكم فورية.',
-                'image_url' => '/projects/quantumyield.jpg',
-                'tags' => ['React', 'TypeScript', 'TailwindCSS', 'Web3'],
-                'price' => 1400.00,
-                'category' => 'Web',
-                'is_active' => true,
-                'is_featured' => true,
-            ],
-            [
-                'title' => 'SolanaTap',
-                'description' => 'تطبيق ويب سريع مدمج داخل تيليجرام مع مزامنة المعاملات اللحظية وحماية عالية.',
-                'image_url' => '/projects/solanatap.jpg',
-                'tags' => ['React 19', 'Telegram SDK', 'Node.js'],
-                'price' => 950.00,
-                'category' => 'Web',
-                'is_active' => true,
-                'is_featured' => true,
-            ],
-            [
-                'title' => 'Al Rayyan Mobile Vault',
-                'description' => 'تطبيق جوال مالي آمن لإدارة الحسابات والمدفوعات اللحظية مع تشفير مصرفي.',
-                'image_url' => '/projects/al-rayyan-vault.jpg',
-                'tags' => ['Flutter', 'iOS', 'Android', 'Biometrics'],
-                'price' => 2100.00,
-                'category' => 'Mobile',
-                'is_active' => true,
-                'is_featured' => false,
-            ],
-            [
-                'title' => 'Doha AI Logistics Suite',
-                'description' => 'نظام ERP متكامل لإدارة الشحنات والأسطول في الدوحة مدعوم بالذكاء الاصطناعي وتتبع GPS.',
-                'image_url' => '/projects/doha-logistics.jpg',
-                'tags' => ['Laravel 11', 'Vue.js', 'PostgreSQL', 'AI Dispatch'],
-                'price' => 3200.00,
-                'category' => 'ERP',
-                'is_active' => true,
-                'is_featured' => false,
-            ],
-        ];
-
-        foreach ($initialProjects as $proj) {
-            Project::firstOrCreate(
-                ['title' => $proj['title']],
-                $proj
-            );
-        }
+        // 3. Projects are added dynamically via Admin Panel
     }
 }
