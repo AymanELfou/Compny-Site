@@ -163,12 +163,12 @@ const Contact: React.FC = () => {
 
                     <p className="text-sm text-[var(--text-secondary)] leading-relaxed max-w-md mx-auto mb-6">
                       {isRTL
-                        ? 'شكراً لتواصلك معنا! تم إرسال تفاصيل مشروعك مباشرة إلى البريد الرسمي للشركة (info@jbrdigitalsoftwareprograming.com). سيقوم فريقنا التقني بمراجعة متطلباتك والرد عليك في أقرب وقت.'
-                        : 'Thank you for reaching out! Your project specifications have been dispatched directly to our company email (info@jbrdigitalsoftwareprograming.com). Our team will review your outline and get back to you promptly.'}
+                        ? 'شكراً لتواصلك معنا! تم إرسال تفاصيل مشروعك مباشرة إلى البريد الرسمي للشركة (jbrdigitalsoftwareprograming@gmail.com). سيقوم فريقنا التقني بمراجعة متطلباتك والرد عليك في أقرب وقت.'
+                        : 'Thank you for reaching out! Your project specifications have been dispatched directly to our company email (jbrdigitalsoftwareprograming@gmail.com). Our team will review your outline and get back to you promptly.'}
                     </p>
 
                     <div className="p-4 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-color)] max-w-md mx-auto mb-8 text-xs text-[var(--text-muted)] space-y-1 font-mono">
-                      <div>Official Email: info@jbrdigitalsoftwareprograming.com</div>
+                      <div>Official Email: jbrdigitalsoftwareprograming@gmail.com</div>
                       <div>Direct Phone: +974 7137 7713</div>
                     </div>
 
@@ -475,7 +475,7 @@ const Contact: React.FC = () => {
                         {isRTL ? 'البريد الإلكتروني الرسمي' : 'Official Project Email'}
                       </div>
                       <div className="text-sm font-bold text-[var(--text-primary)] group-hover:text-[var(--primary)] transition-colors">
-                        info@jbrdigitalsoftwareprograming.com
+                        jbrdigitalsoftwareprograming@gmail.com
                       </div>
                     </div>
                   </a>
