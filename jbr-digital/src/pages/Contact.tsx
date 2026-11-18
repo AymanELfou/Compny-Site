@@ -464,7 +464,7 @@ const Contact: React.FC = () => {
 
                   {/* Email */}
                   <a
-                    href="mailto:info@jbrdigitalsoftwareprograming.com"
+                    href="mailto:jbrdigitalsoftwareprograming@gmail.com"
                     className="flex items-start gap-3 p-3.5 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-color)] no-underline text-inherit hover:border-[var(--primary)] transition-colors group"
                   >
                     <div className="w-9 h-9 rounded-md bg-[var(--bg-card)] border border-[var(--border-color)] flex items-center justify-center text-[#00A3FF] shrink-0">

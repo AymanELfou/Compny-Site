@@ -37,7 +37,7 @@ class ContactController extends Controller
         $validated = $validator->validated();
         $validated['ip'] = $request->ip();
 
-        $recipient = env('COMPANY_CONTACT_EMAIL', 'info@jbrdigitalsoftwareprograming.com');
+        $recipient = env('COMPANY_CONTACT_EMAIL', 'jbrdigitalsoftwareprograming@gmail.com');
 
         try {
             Mail::to($recipient)->send(new ContactInquiryMail($validated));
