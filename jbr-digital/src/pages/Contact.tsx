@@ -18,6 +18,7 @@ import {
 } from 'lucide-react'
 import WhatsAppIcon from '@mui/icons-material/WhatsApp'
 import { FlagQatar, FlagMorocco } from '../components/Flags'
+import api from '../lib/api'
 
 const contactSchema = z.object({
   fullName: z
@@ -45,6 +46,7 @@ const Contact: React.FC = () => {
   const { t, i18n } = useTranslation()
   const isRTL = i18n.language === 'ar'
   const [submissionStatus, setSubmissionStatus] = useState<'idle' | 'submitting' | 'submitted'>('idle')
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   useEffect(() => {
     document.title = isRTL
@@ -73,16 +75,28 @@ const Contact: React.FC = () => {
 
   const selectedClientType = watch('clientType') || 'company'
 
-  const onSubmit = (data: ContactFormData) => {
+  const onSubmit = async (data: ContactFormData) => {
     setSubmissionStatus('submitting')
-    // Client-side validated demonstration; does not claim fake email transmission without real SMTP backend
-    setTimeout(() => {
+    setErrorMessage(null)
+
+    try {
+      await api.post('/contact', data)
       setSubmissionStatus('submitted')
-    }, 600)
+    } catch (err: any) {
+      console.error('Contact form submission error:', err)
+      const errorMsg =
+        err?.response?.data?.message ||
+        (isRTL
+          ? 'تعذر إرسال الطلب في الوقت الحالي. يرجى المحاولة لاحقاً أو التواصل عبر الواتساب أو الهاتف مباشرة.'
+          : 'Could not send your inquiry. Please try again later or reach out via WhatsApp/Phone.')
+      setErrorMessage(errorMsg)
+      setSubmissionStatus('idle')
+    }
   }
 
   const handleResetForm = () => {
     reset()
+    setErrorMessage(null)
     setSubmissionStatus('idle')
   }
 
@@ -144,13 +158,13 @@ const Contact: React.FC = () => {
                     </div>
 
                     <h2 className="text-2xl font-bold mb-3 text-[var(--text-primary)]">
-                      {isRTL ? 'تم التحقق من بيانات الطلب بنجاح' : 'Inquiry Validated Successfully'}
+                      {isRTL ? 'تم إرسال تفاصيل مشروعك بنجاح' : 'Project Details Sent Successfully'}
                     </h2>
 
                     <p className="text-sm text-[var(--text-secondary)] leading-relaxed max-w-md mx-auto mb-6">
                       {isRTL
-                        ? 'تم التحقق من حقول النموذج بنجاح على جانب العميل للمتابعة الفورية والتنسيق المباشر يمكنك التواصل معنا عبر البريد الرسمي أو الاتصال الهاتفي'
-                        : 'Your inquiry format has been validated on the client side. For immediate technical review and contract scheduling, feel free to reach our leads directly via email or phone.'}
+                        ? 'شكراً لتواصلك معنا! تم إرسال تفاصيل مشروعك مباشرة إلى البريد الرسمي للشركة (info@jbrdigitalsoftwareprograming.com). سيقوم فريقنا التقني بمراجعة متطلباتك والرد عليك في أقرب وقت.'
+                        : 'Thank you for reaching out! Your project specifications have been dispatched directly to our company email (info@jbrdigitalsoftwareprograming.com). Our team will review your outline and get back to you promptly.'}
                     </p>
 
                     <div className="p-4 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-color)] max-w-md mx-auto mb-8 text-xs text-[var(--text-muted)] space-y-1 font-mono">
@@ -160,7 +174,7 @@ const Contact: React.FC = () => {
 
                     <button
                       onClick={handleResetForm}
-                      className="btn-secondary text-xs px-5 py-2.5"
+                      className="btn-secondary text-xs px-5 py-2.5 cursor-pointer"
                     >
                       {isRTL ? 'إرسال استفسار آخر' : 'Submit Another Inquiry'}
                     </button>
@@ -177,6 +191,13 @@ const Contact: React.FC = () => {
                           : 'Provide your project outline and our technical team will respond within one business day.'}
                       </p>
                     </div>
+
+                    {errorMessage && (
+                      <div className="mb-5 p-3.5 rounded-lg bg-red-500/10 border border-red-500/30 text-[#EF4444] text-xs flex items-start gap-2.5">
+                        <AlertCircle size={16} className="flex-shrink-0 mt-0.5" />
+                        <span className="leading-relaxed">{errorMessage}</span>
+                      </div>
+                    )}
 
                     {/* Entity Type: شركة / فرد */}
                     <div className="mb-5">
@@ -347,10 +368,16 @@ const Contact: React.FC = () => {
                     <button
                       type="submit"
                       disabled={submissionStatus === 'submitting'}
-                      className="btn-primary w-full py-3.5 text-sm font-bold flex items-center justify-center gap-2"
+                      className="btn-primary w-full py-3.5 text-sm font-bold flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                     >
                       {submissionStatus === 'submitting' ? (
-                        <span>{isRTL ? 'جاري التحقق...' : 'Validating Scope...'}</span>
+                        <span className="flex items-center gap-2">
+                          <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24" fill="none">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                          </svg>
+                          <span>{isRTL ? 'جاري إرسال تفاصيل المشروع...' : 'Sending Project Details...'}</span>
+                        </span>
                       ) : (
                         <>
                           <Send size={15} className={isRTL ? 'rotate-180' : ''} />

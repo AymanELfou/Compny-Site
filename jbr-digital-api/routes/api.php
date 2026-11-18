@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ChatbotConfigController;
 use App\Http\Controllers\Api\ChatController;
+use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\UploadController;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,9 @@ Route::get('/projects', [ProjectController::class, 'index']);
 
 // AI Chatbot endpoint for clients
 Route::post('/chat', [ChatController::class, 'send']);
+
+// Contact Page submission endpoint (sends inquiry email to company)
+Route::post('/contact', [ContactController::class, 'send']);
 
 // Admin Login
 Route::post('/admin/login', [AuthController::class, 'login']);
