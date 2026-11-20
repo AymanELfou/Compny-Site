@@ -582,7 +582,7 @@ const Contact: React.FC = () => {
 
                 <div className="p-3.5 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-color)] flex items-center justify-between">
                   <span className="font-bold text-xs text-[var(--text-primary)]">
-                    {isRTL ? 'فرع : المغرب - الدارالبيضاء' : 'Branch: Morocco - Casablanca'}
+                    {isRTL ? 'فرع : المملكة المغربية - الدارالبيضاء' : 'Branch: Kingdom of Morocco - Casablanca'}
                   </span>
                   <FlagMorocco size={24} />
                 </div>

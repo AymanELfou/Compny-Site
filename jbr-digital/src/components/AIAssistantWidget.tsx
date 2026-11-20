@@ -299,8 +299,8 @@ export const AIAssistantWidget: React.FC = () => {
         if (response.data?.reply) {
           replyText = response.data.reply
           action = {
-            labelEn: 'Contact Us',
-            labelAr: 'تواصل معنا',
+            labelEn: 'Start Your Project Now',
+            labelAr: 'ابدأ مشروعك الآن',
             href: '/contact',
             isExternal: false,
           }
@@ -317,8 +317,8 @@ export const AIAssistantWidget: React.FC = () => {
             ? 'تُحدد التكلفة بناءً على نطاق العمل الدقيق والميزات المطلوبة وفق منهجية العقود محددة المخرجات (SOW) تبدأ أسعار المواقع من 950$ والتطبيقات من 1900$ دولار أمريكي يمكنك مراسلتنا لحساب السعر الدقيق لمشروعك'
             : 'Pricing depends on your specific architectural requirements Web platforms start from $950 USD and mobile apps from $1900 USD Contact us for an exact quotation'
           action = {
-            labelEn: 'Contact Us',
-            labelAr: 'تواصل معنا',
+            labelEn: 'Start Your Project Now',
+            labelAr: 'ابدأ مشروعك الآن',
             href: '/contact',
             isExternal: false,
           }
@@ -327,8 +327,8 @@ export const AIAssistantWidget: React.FC = () => {
             ? 'نقدم تكاملاً رسمياً مع Meta WhatsApp Cloud API لبناء روبوتات ذكية تؤتمت الردود على الاستفسارات وحجز المواعيد وتوليد الفواتير على مدار الساعة'
             : 'We provide certified integration with the Meta WhatsApp Cloud API to deploy conversational AI agents that automate customer service appointment scheduling and dispatch tracking 24/7'
           action = {
-            labelEn: 'Contact Us',
-            labelAr: 'تواصل معنا',
+            labelEn: 'Start Your Project Now',
+            labelAr: 'ابدأ مشروعك الآن',
             href: '/contact',
             isExternal: false,
           }
@@ -337,8 +337,8 @@ export const AIAssistantWidget: React.FC = () => {
             ? 'يسعدنا التواصل معك مباشرة هاتفنا المعتمد في الدوحة +974 7137 7713 والبريد الإلكتروني Info@jbrdigitalsoftwareprograming.com'
             : 'You can reach our engineering leads directly at +974 7137 7713 (Doha HQ) or by email at Info@jbrdigitalsoftwareprograming.com We look forward to assisting you'
           action = {
-            labelEn: 'Contact Us',
-            labelAr: 'تواصل معنا',
+            labelEn: 'Start Your Project Now',
+            labelAr: 'ابدأ مشروعك الآن',
             href: '/contact',
             isExternal: false,
           }
@@ -347,8 +347,8 @@ export const AIAssistantWidget: React.FC = () => {
             ? 'شكراً لاستفسارك في JBR Digital نبني حلولاً برمجية احترافية تشمل منصات الويب وتطبيقات الجوال وأنظمة ERP والأتمتة الذكية يمكنك أيضاً التحدث معنا مباشرة'
             : 'Thank you for your question In JBR Digital we build professional software platforms native mobile apps ERP systems and AI automation Feel free to request a consultation or speak directly with us'
           action = {
-            labelEn: 'Contact Us',
-            labelAr: 'تواصل معنا',
+            labelEn: 'Start Your Project Now',
+            labelAr: 'ابدأ مشروعك الآن',
             href: '/contact',
             isExternal: false,
           }

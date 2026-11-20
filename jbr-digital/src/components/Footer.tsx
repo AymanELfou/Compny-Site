@@ -216,7 +216,7 @@ const Footer: React.FC = () => {
               <div className="flex items-center gap-2.5">
                 <FlagMorocco size={21} />
                 <div className="text-[var(--text-primary)] font-medium">
-                  {isRTL ? 'فرع : المغرب - الدارالبيضاء' : 'Branch: Morocco - Casablanca'}
+                  {isRTL ? 'فرع : المملكة المغربية - الدارالبيضاء' : 'Branch: Kingdom of Morocco - Casablanca'}
                 </div>
               </div>
 
