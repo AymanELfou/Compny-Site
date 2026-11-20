@@ -27,6 +27,68 @@ interface ChatMessage {
   }
 }
 
+// Parse text to make Markdown links [text](url) and raw URLs clickable
+const renderTextWithLinks = (rawText: string) => {
+  if (!rawText) return null
+
+  // Matches Markdown link [Anchor text](URL) OR raw URL https?://...
+  const tokenRegex = /(\[[^\]\n]+\]\([^\)\s]+\)|https?:\/\/[^\s]+)/g
+  const parts = rawText.split(tokenRegex)
+
+  return parts.map((part, i) => {
+    if (!part) return null
+
+    // Check for Markdown link: [Label](URL)
+    const mdMatch = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/)
+    if (mdMatch) {
+      const label = mdMatch[1]
+      const url = mdMatch[2].trim()
+      const finalHref = url.startsWith('www.') ? `https://${url}` : url
+
+      return (
+        <a
+          key={i}
+          href={finalHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#00A3FF] hover:text-[#38bdf8] underline underline-offset-4 font-bold transition-colors cursor-pointer inline-flex items-center gap-1 mx-1"
+          onClick={(e) => e.stopPropagation()}
+          title={label}
+        >
+          <span>{label}</span>
+          <ExternalLink size={12} className="inline shrink-0 opacity-80" />
+        </a>
+      )
+    }
+
+    // Check for standalone URL: https?://...
+    if (/^https?:\/\/[^\s]+$/.test(part)) {
+      // Clean trailing punctuation like ., ,, ;, :, ), ]
+      const cleanUrl = part.replace(/[.,;:!?)\]]+$/, '')
+      const trailing = part.slice(cleanUrl.length)
+
+      return (
+        <React.Fragment key={i}>
+          <a
+            href={cleanUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#00A3FF] hover:text-[#38bdf8] underline underline-offset-4 font-bold transition-colors cursor-pointer inline-flex items-center gap-1 mx-1 break-all"
+            onClick={(e) => e.stopPropagation()}
+            title={cleanUrl}
+          >
+            <span>{cleanUrl}</span>
+            <ExternalLink size={12} className="inline shrink-0 opacity-80" />
+          </a>
+          {trailing}
+        </React.Fragment>
+      )
+    }
+
+    return <span key={i}>{part}</span>
+  })
+}
+
 const LiveWritingText: React.FC<{
   text: string
   animate: boolean
@@ -64,7 +126,7 @@ const LiveWritingText: React.FC<{
 
   return (
     <p className="m-0 whitespace-pre-line leading-relaxed">
-      {displayedText}
+      {renderTextWithLinks(displayedText)}
       {!isDone && (
         <span className="inline-block w-1.5 h-3.5 bg-[#00A3FF] ml-0.5 animate-pulse align-middle" />
       )}
@@ -237,10 +299,10 @@ export const AIAssistantWidget: React.FC = () => {
         if (response.data?.reply) {
           replyText = response.data.reply
           action = {
-            labelEn: 'Chat on WhatsApp',
-            labelAr: 'تحدث عبر واتساب',
-            href: 'https://wa.me/97471377713',
-            isExternal: true,
+            labelEn: 'Contact Us',
+            labelAr: 'تواصل معنا',
+            href: '/contact',
+            isExternal: false,
           }
         }
       } catch {
@@ -255,38 +317,40 @@ export const AIAssistantWidget: React.FC = () => {
             ? 'تُحدد التكلفة بناءً على نطاق العمل الدقيق والميزات المطلوبة وفق منهجية العقود محددة المخرجات (SOW) تبدأ أسعار المواقع من 950$ والتطبيقات من 1900$ دولار أمريكي يمكنك مراسلتنا لحساب السعر الدقيق لمشروعك'
             : 'Pricing depends on your specific architectural requirements Web platforms start from $950 USD and mobile apps from $1900 USD Contact us for an exact quotation'
           action = {
-            labelEn: 'Chat on WhatsApp',
-            labelAr: 'تحدث عبر واتساب',
-            href: 'https://wa.me/97471377713',
-            isExternal: true,
+            labelEn: 'Contact Us',
+            labelAr: 'تواصل معنا',
+            href: '/contact',
+            isExternal: false,
           }
         } else if (lower.includes('whatsapp') || lower.includes('واتساب') || lower.includes('bot')) {
           replyText = isRTL
             ? 'نقدم تكاملاً رسمياً مع Meta WhatsApp Cloud API لبناء روبوتات ذكية تؤتمت الردود على الاستفسارات وحجز المواعيد وتوليد الفواتير على مدار الساعة'
             : 'We provide certified integration with the Meta WhatsApp Cloud API to deploy conversational AI agents that automate customer service appointment scheduling and dispatch tracking 24/7'
           action = {
-            labelEn: 'Chat on WhatsApp',
-            labelAr: 'تحدث عبر واتساب',
-            href: 'https://wa.me/97471377713',
-            isExternal: true,
+            labelEn: 'Contact Us',
+            labelAr: 'تواصل معنا',
+            href: '/contact',
+            isExternal: false,
           }
         } else if (lower.includes('contact') || lower.includes('phone') || lower.includes('تواصل') || lower.includes('هاتف')) {
           replyText = isRTL
-            ? 'يسعدنا التواصل معك مباشرة هاتفنا المعتمد في الدوحة +974 7137 7713 والبريد الإلكتروني info@jbrdigitalsoftwareprograming.com'
-            : 'You can reach our engineering leads directly at +974 7137 7713 (Doha HQ) or by email at info@jbrdigitalsoftwareprograming.com We look forward to assisting you'
+            ? 'يسعدنا التواصل معك مباشرة هاتفنا المعتمد في الدوحة +974 7137 7713 والبريد الإلكتروني Info@jbrdigitalsoftwareprograming.com'
+            : 'You can reach our engineering leads directly at +974 7137 7713 (Doha HQ) or by email at Info@jbrdigitalsoftwareprograming.com We look forward to assisting you'
           action = {
-            labelEn: 'Call Direct: +974 7137 7713',
-            labelAr: 'اتصال مباشر: 7713 7137 974+',
-            href: 'tel:+97471377713',
+            labelEn: 'Contact Us',
+            labelAr: 'تواصل معنا',
+            href: '/contact',
+            isExternal: false,
           }
         } else {
           replyText = isRTL
             ? 'شكراً لاستفسارك في JBR Digital نبني حلولاً برمجية احترافية تشمل منصات الويب وتطبيقات الجوال وأنظمة ERP والأتمتة الذكية يمكنك أيضاً التحدث معنا مباشرة'
             : 'Thank you for your question In JBR Digital we build professional software platforms native mobile apps ERP systems and AI automation Feel free to request a consultation or speak directly with us'
           action = {
-            labelEn: 'Talk with Us',
-            labelAr: 'تحدث معنا',
+            labelEn: 'Contact Us',
+            labelAr: 'تواصل معنا',
             href: '/contact',
+            isExternal: false,
           }
         }
       }
@@ -512,7 +576,7 @@ export const AIAssistantWidget: React.FC = () => {
                         onCharTyped={() => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })}
                       />
                     ) : (
-                      <p className="m-0 whitespace-pre-line">{msg.text}</p>
+                      <p className="m-0 whitespace-pre-line">{renderTextWithLinks(msg.text)}</p>
                     )}
                   </div>
                 </div>
@@ -525,7 +589,7 @@ export const AIAssistantWidget: React.FC = () => {
                         href={msg.quickAction.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-bold text-white bg-emerald-600 hover:bg-emerald-500 transition-colors shadow-sm"
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-[11px] font-bold text-white bg-emerald-600 hover:bg-emerald-500 transition-colors shadow-sm cursor-pointer"
                         style={{ textDecoration: 'none' }}
                       >
                         <MessageSquare size={13} />
@@ -536,9 +600,10 @@ export const AIAssistantWidget: React.FC = () => {
                       <Link
                         to={msg.quickAction.href || '/contact'}
                         onClick={() => setIsOpen(false)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-bold text-white bg-[#0055FF] hover:bg-[#00A3FF] transition-colors shadow-sm"
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-[11px] font-bold text-white bg-emerald-600 hover:bg-emerald-500 transition-colors shadow-sm cursor-pointer"
                         style={{ textDecoration: 'none' }}
                       >
+                        <MessageSquare size={13} />
                         <span>{msg.quickAction.label}</span>
                         <ArrowRight size={13} className={isRTL ? 'rotate-180' : ''} />
                       </Link>

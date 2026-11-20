@@ -93,11 +93,11 @@ const Footer: React.FC = () => {
 
                 {/* Email */}
                 <a
-                  href="mailto:info@jbrdigitalsoftwareprograming.com"
+                  href="mailto:jbrdigitalsoftwareprograming@gmail.com"
                   className="inline-flex items-center gap-1.5 text-xs text-[var(--text-primary)] hover:text-[var(--primary)] font-medium transition-colors"
                 >
                   <Mail size={13} className="text-[#00A3FF]" />
-                  <span>info@jbrdigitalsoftwareprograming.com</span>
+                  <span>Info@jbrdigitalsoftwareprograming.com</span>
                 </a>
 
                 <span className="text-xs text-[var(--text-muted)]">•</span>

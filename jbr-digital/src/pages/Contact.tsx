@@ -475,7 +475,7 @@ const Contact: React.FC = () => {
                         {isRTL ? 'البريد الإلكتروني الرسمي' : 'Official Project Email'}
                       </div>
                       <div className="text-sm font-bold text-[var(--text-primary)] group-hover:text-[var(--primary)] transition-colors">
-                        jbrdigitalsoftwareprograming@gmail.com
+                        Info@jbrdigitalsoftwareprograming.com
                       </div>
                     </div>
                   </a>
